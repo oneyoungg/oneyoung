@@ -18,20 +18,12 @@
 
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>com.github</groupId>
-            <artifactId>oneyoung-common</artifactId>
+            <artifactId>oneyoung-portal</artifactId>
         </dependency>
+
     </dependencies>
 
     <build>

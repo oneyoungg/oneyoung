@@ -6,6 +6,7 @@
     <modules>
         <module>common</module>
         <module>start</module>
+        <module>portal</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -67,6 +68,11 @@
             <dependency>
                 <groupId>com.github</groupId>
                 <artifactId>oneyoung-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github</groupId>
+                <artifactId>oneyoung-portal</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
