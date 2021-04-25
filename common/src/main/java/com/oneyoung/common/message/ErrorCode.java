@@ -8,13 +8,15 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 错误 CODE
- *@author oneyoung
+ *
+ * @author oneyoung
  */
 @Slf4j
 public class ErrorCode {
@@ -37,26 +39,30 @@ public class ErrorCode {
     /**
      * file path for displaying error
      */
-    private final static String displayFilePath = "i18n/errors_zh_CN.properties";
-    private final static String internalErrorMessageFilePath = "i18n/errors_en_AA.properties";
-    private final static String readableErrorCodeFilePath = "i18n/errors_en_XA.properties";
+    private static final String DISPLAY_FILE_PATH = "i18n/errors_zh_CN.properties";
+    private static final String INTERNAL_ERROR_MESSAGE_FILE_PATH = "i18n/errors_en_AA.properties";
+    private static final String READABLE_ERROR_CODE_FILE_PATH = "i18n/errors_en_XA.properties";
     private static Map<Object, Object> displayErrorCodes;
-    // 是否是老模式, 默认置为老模式, 这种模式下不支持国际化, 且如果展示可读错误码则需要增加特殊符号
+    /**
+     * 是否是老模式, 默认置为老模式, 这种模式下不支持国际化, 且如果展示可读错误码则需要增加特殊符号
+     */
     private static Map<Object, Object> internalErrorMessage;
     private static Map<Object, Object> readableErrorCode;
-    // 解析出来格式不标准的ReadableErrorCode
-    private static Map<Object, Object> nonStandardReadableErrorCode = new HashMap<Object, Object>();
+    /**
+     * 解析出来格式不标准的ReadableErrorCode
+     */
+    private static final Map<Object, Object> NON_STANDARD_READABLE_ERROR_CODE = new HashMap<>();
 
-    private static Map<String, String> cachedLogMessage = new ConcurrentHashMap<String, String>();
+    private static final Map<String, String> CACHED_LOG_MESSAGE = new ConcurrentHashMap<>();
 
     static {
         init();
     }
 
     public static void init() {
-        internalErrorMessage = extractErrorCodes(internalErrorMessageFilePath);
-        readableErrorCode = extractErrorCodes(readableErrorCodeFilePath);
-        displayErrorCodes = extractErrorCodes(displayFilePath, true, DEFAULT_DISPLAY_ERROR_MESSAGE);
+        internalErrorMessage = extractErrorCodes(INTERNAL_ERROR_MESSAGE_FILE_PATH);
+        readableErrorCode = extractErrorCodes(READABLE_ERROR_CODE_FILE_PATH);
+        displayErrorCodes = extractErrorCodes(DISPLAY_FILE_PATH, true, DEFAULT_DISPLAY_ERROR_MESSAGE);
 
         processReadableErrorCode();
     }
@@ -64,22 +70,22 @@ public class ErrorCode {
 
     // 处理可读错误码，保证没有特殊字符
     private static void processReadableErrorCode() {
-        nonStandardReadableErrorCode.clear();
+        NON_STANDARD_READABLE_ERROR_CODE.clear();
         for (Map.Entry<Object, Object> entry : readableErrorCode.entrySet()) {
             String raw = entry.getValue().toString();
             try {
-                String encoded = URLEncoder.encode(raw, "UTF-8");
+                String encoded = URLEncoder.encode(raw, StandardCharsets.UTF_8.displayName());
                 if (!raw.equals(encoded)) {
-                    nonStandardReadableErrorCode.put(entry.getKey(), raw);
+                    NON_STANDARD_READABLE_ERROR_CODE.put(entry.getKey(), raw);
                 }
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
         }
-        for (Map.Entry<Object, Object> entry : nonStandardReadableErrorCode.entrySet()) {
+        for (Map.Entry<Object, Object> entry : NON_STANDARD_READABLE_ERROR_CODE.entrySet()) {
             String raw = entry.getValue().toString();
             try {
-                readableErrorCode.put(entry.getKey(), URLEncoder.encode(raw, "UTF-8"));
+                readableErrorCode.put(entry.getKey(), URLEncoder.encode(raw, StandardCharsets.UTF_8.displayName()));
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
             }
@@ -94,10 +100,10 @@ public class ErrorCode {
      * @return
      */
     public static String logMessage(@PropertyKey(resourceBundle = ErrorCode.BUNDLE)
-                                    String key, Object... params) {
+                                            String key, Object... params) {
         boolean canNotCache = params != null && params.length > 0;
         if (!canNotCache) {
-            String result = cachedLogMessage.get(key);
+            String result = CACHED_LOG_MESSAGE.get(key);
             if (result != null) {
                 return result;
             }
@@ -110,7 +116,7 @@ public class ErrorCode {
         }
         String result = "{c:" + key + "," + "m:" + logMessage + "}";
         if (!canNotCache) {
-            cachedLogMessage.put(key, result);
+            CACHED_LOG_MESSAGE.put(key, result);
         }
         return result;
     }
@@ -123,10 +129,10 @@ public class ErrorCode {
      * @return
      */
     private static String logMessageWithoutCode(@PropertyKey(resourceBundle = BUNDLE)
-                                                String key, Object... params) {
+                                                        String key, Object... params) {
         boolean canNotCache = params != null && params.length > 0;
         if (!canNotCache) {
-            String result = cachedLogMessage.get(key);
+            String result = CACHED_LOG_MESSAGE.get(key);
             if (result != null) {
                 return result;
             }
@@ -139,7 +145,7 @@ public class ErrorCode {
         }
         String result = logMessage;
         if (!canNotCache) {
-            cachedLogMessage.put(key, result);
+            CACHED_LOG_MESSAGE.put(key, result);
         }
         return result;
     }
@@ -159,11 +165,13 @@ public class ErrorCode {
     private static String searchKeyInAllResourceFile(Map<Object, Object> props,
                                                      String key,
                                                      String defaultValue, Object... params) {
-        if (!props.containsKey(key)) return defaultValue;
+        if (!props.containsKey(key)) {
+            return defaultValue;
+        }
 
         Object obj = props.get(key);
         String message = buildMessage(obj, params);
-        return message!=null&message.length()>0 ? message : defaultValue;
+        return message != null && message.length() > 0 ? message : defaultValue;
     }
 
 
@@ -194,22 +202,17 @@ public class ErrorCode {
     private static Map<Object, Object> extractErrorCodes(String resourceFilePath,
                                                          boolean replaceEnglishWords,
                                                          String replaceText) {
-        Map<Object, Object> props = new HashMap<Object, Object>();
-        //props.putAll(LatticeSpiFactory.getInstance().getContainerManager()
-        //    .extractPluginErrorCodes(resourceFilePath, replaceEnglishWords, replaceText));
-
-        props.putAll(extractErrorCodes(Thread.currentThread().getContextClassLoader(),
-            resourceFilePath,
-            replaceEnglishWords,
-            replaceText));
-        return props;
+        return new HashMap<>(extractErrorCodes(Thread.currentThread().getContextClassLoader(),
+                resourceFilePath,
+                replaceEnglishWords,
+                replaceText));
     }
 
     public static Map<Object, Object> extractErrorCodes(ClassLoader classLoader,
-                                                         String resourceFilePath,
-                                                         boolean replaceEnglishWords,
-                                                         String replaceText) {
-        Map<Object, Object> props = new HashMap<Object, Object>();
+                                                        String resourceFilePath,
+                                                        boolean replaceEnglishWords,
+                                                        String replaceText) {
+        Map<Object, Object> props = new HashMap<>();
         try {
             Enumeration<URL> resources = classLoader.getResources(resourceFilePath);
             while (resources.hasMoreElements()) {
@@ -244,8 +247,8 @@ public class ErrorCode {
     }
 
     private static Map<Object, Object> extractContextErrorCodes(String resourceFilePath,
-                                                         boolean replaceEnglishWords,
-                                                         String replaceText) {
+                                                                boolean replaceEnglishWords,
+                                                                String replaceText) {
         Map<Object, Object> props = new HashMap<Object, Object>();
         props.putAll(extractErrorCodes(Thread.currentThread().getContextClassLoader(),
                 resourceFilePath,
@@ -253,10 +256,6 @@ public class ErrorCode {
                 replaceText));
         return props;
     }
-
-
-
-
 
 
     /**

@@ -26,7 +26,7 @@ public class TestController {
     }
 
     @PostMapping("exception")
-    public Result<String> exception(@RequestBody @Valid CallRequest name) {
+    public Result<String> exception(@RequestBody CallRequest name) {
         throw new PortalException("PORTAL_EXCEPTION");
     }
 }
