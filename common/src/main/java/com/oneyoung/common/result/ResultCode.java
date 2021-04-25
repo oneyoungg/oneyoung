@@ -1,9 +1,8 @@
-package com.oneyoung.common;
+package com.oneyoung.common.result;
 
 /**
  *
- * @author yufeng.lds
- * @date 2019-12-04
+ * @author oneyoung
  */
 public enum ResultCode {
     /**

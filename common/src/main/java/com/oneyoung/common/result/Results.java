@@ -1,6 +1,7 @@
-package com.oneyoung.common;
+package com.oneyoung.common.result;
 
-
+import com.oneyoung.common.message.ErrorCode;
+import com.oneyoung.common.message.ErrorCodeException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.slf4j.Logger;
@@ -8,16 +9,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * 封装并返回Result的工具类
- *
- * @author luyan
- * @since 2019/12/13 15:48
+ * @author oneyoung
  */
 public class Results implements Serializable {
 
@@ -78,10 +75,10 @@ public class Results implements Serializable {
         return result;
     }
 
-//    public static <T> Result<T> failErrorCode(String errorCode, Object... args) {
-//        String message = ErrorCode.displayMessage(errorCode, args);
-//        return fail(errorCode, message);
-//    }
+    public static <T> Result<T> failErrorCode(String errorCode, Object... args) {
+        String message = ErrorCode.displayMessage(errorCode, args);
+        return fail(errorCode, message);
+    }
 
     public static <T> Result<T> failIllegalArgument(String message) {
         return failIllegalArgument(null, message);
@@ -99,9 +96,9 @@ public class Results implements Serializable {
         return fail(data, message, ResultCode.SYSTEM_ERROR.code);
     }
 
-//    public static <T> Result<T> failException(ErrorCodeException errorCodeException) {
-//        return fail(null, errorCodeException.getErrorCode(), errorCodeException.getErrorMessage());
-//    }
+    public static <T> Result<T> failException(ErrorCodeException errorCodeException) {
+        return fail(null, errorCodeException.getErrorCode(), errorCodeException.getErrorMessage());
+    }
 
     public static <T> Result<T> failException(Exception exception) {
         return fail(null, ResultCode.SYSTEM_ERROR.code, exception.getMessage());
@@ -121,35 +118,4 @@ public class Results implements Serializable {
         return Results.failIllegalArgument(messages);
     }
 
-
-    /**
-     * 分页结果直接使用Result
-     *
-     * @since 2020-11-23
-     */
-    public static <T> Result<List<T>> listSuccess(List<T> data, int total) {
-        Result<List<T>> listResult = success(data);
-        listResult.setTotal((long) total);
-        return listResult;
-    }
-
-    /**
-     * 分页结果直接使用Result
-     *
-     * @since 2020-11-23
-     */
-    public static <T> Result<List<T>> listSuccess(List<T> data, long total) {
-        Result<List<T>> listResult = success(data);
-        listResult.setTotal(total);
-        return listResult;
-    }
-
-    /**
-     * 分页结果直接使用Result
-     *
-     * @since 2020-11-26
-     */
-    public static <T> Result<List<T>> listEmptySuccess() {
-        return listSuccess(Collections.emptyList(), 0L);
-    }
 }

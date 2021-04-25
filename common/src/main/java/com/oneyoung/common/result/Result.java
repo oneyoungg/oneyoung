@@ -1,4 +1,4 @@
-package com.oneyoung.common;
+package com.oneyoung.common.result;
 
 
 import lombok.Getter;
@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * 基础结果类
+ * @author oneyoung
  */
 @Getter
 @Setter
@@ -27,13 +28,6 @@ public class Result<T> implements Serializable {
      * 业务结果，默认失败
      */
     private boolean success;
-
-    /**
-     * 总数量，可以为空，仅在列表查询时才有值。当列表返回时，泛型应该是List<E> 。
-     *
-     * @since 2020-11-23 新版本使用
-     */
-    private Long total;
 
     /**
      * 返回结果Code

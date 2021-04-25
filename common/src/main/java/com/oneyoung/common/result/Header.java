@@ -1,4 +1,4 @@
-package com.oneyoung.common;
+package com.oneyoung.common.result;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author luyan
- * @since 2020/9/4
+ * @author oneyoung
  */
 @Getter
 @Setter
