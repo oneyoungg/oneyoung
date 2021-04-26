@@ -100,7 +100,7 @@ public class ErrorCode {
      *
      * @param key    error code
      * @param params params to build the error message
-     * @return
+     * @return log Message
      */
     public static String logMessage(@PropertyKey(resourceBundle = ErrorCode.BUNDLE)
                                             String key, Object... params) {
@@ -111,12 +111,7 @@ public class ErrorCode {
                 return result;
             }
         }
-        String logMessage = "log message cannot be retrieved properly";
-        try {
-            logMessage = searchKeyInAllResourceFile(internalErrorMessage, key, DEFAULT_LOG_ERROR_MESSAGE, params);
-        } catch (Exception e) {
-            log.error(logMessage, e);
-        }
+        String logMessage = searchKeyInAllResourceFile(internalErrorMessage, key, DEFAULT_LOG_ERROR_MESSAGE, params);
         String result = "{c:" + key + "," + "m:" + logMessage + "}";
         if (!exitsParams) {
             CACHED_LOG_MESSAGE.put(key, result);
@@ -129,7 +124,7 @@ public class ErrorCode {
      *
      * @param key    error code
      * @param params params to build the error message
-     * @return
+     * @return log Message
      */
     private static String logMessageWithoutCode(@PropertyKey(resourceBundle = BUNDLE)
                                                         String key, Object... params) {
@@ -152,7 +147,7 @@ public class ErrorCode {
      *
      * @param key    error code
      * @param params params to build the error message
-     * @return
+     * @return message
      */
     public static String displayMessage(@PropertyKey(resourceBundle = BUNDLE) String key, Object... params) {
         return searchKeyInAllResourceFile(displayErrorCodes, key, DEFAULT_DISPLAY_ERROR_MESSAGE, params);
@@ -195,9 +190,9 @@ public class ErrorCode {
     }
 
     /**
-     * @param resourceFilePath
+     * @param resourceFilePath resource
      * @param replaceEnglishWords 如果全是英文,是否要替换为默认的中文文案
-     * @return
+     * @return map
      */
     private static Map<Object, Object> extractErrorCodes(String resourceFilePath,
                                                          boolean replaceEnglishWords,
@@ -252,16 +247,6 @@ public class ErrorCode {
         return !ErrorCode.existChineseCharacter(chineseStr);
     }
 
-    private static Map<Object, Object> extractContextErrorCodes(String resourceFilePath,
-                                                                boolean replaceEnglishWords,
-                                                                String replaceText) {
-        Map<Object, Object> props = new HashMap<Object, Object>();
-        props.putAll(extractErrorCodes(Thread.currentThread().getContextClassLoader(),
-                resourceFilePath,
-                replaceEnglishWords,
-                replaceText));
-        return props;
-    }
 
     /**
      * 这个方法会从当前模块的resources/i18n/errors.properties文件中解析出错误码和错误文案
