@@ -42,21 +42,23 @@ public class ErrorCode {
     private static final String DISPLAY_FILE_PATH = "i18n/errors_zh_CN.properties";
     private static final String INTERNAL_ERROR_MESSAGE_FILE_PATH = "i18n/errors_en_AA.properties";
     private static final String READABLE_ERROR_CODE_FILE_PATH = "i18n/errors_en_XA.properties";
+    /**
+     * 解析出来格式不标准的ReadableErrorCode
+     */
+    private static final Map<Object, Object> NON_STANDARD_READABLE_ERROR_CODE = new HashMap<>();
+    private static final Map<String, String> CACHED_LOG_MESSAGE = new ConcurrentHashMap<>();
     private static Map<Object, Object> displayErrorCodes;
     /**
      * 是否是老模式, 默认置为老模式, 这种模式下不支持国际化, 且如果展示可读错误码则需要增加特殊符号
      */
     private static Map<Object, Object> internalErrorMessage;
     private static Map<Object, Object> readableErrorCode;
-    /**
-     * 解析出来格式不标准的ReadableErrorCode
-     */
-    private static final Map<Object, Object> NON_STANDARD_READABLE_ERROR_CODE = new HashMap<>();
-
-    private static final Map<String, String> CACHED_LOG_MESSAGE = new ConcurrentHashMap<>();
 
     static {
         init();
+    }
+
+    private ErrorCode() {
     }
 
     public static void init() {
@@ -67,8 +69,9 @@ public class ErrorCode {
         processReadableErrorCode();
     }
 
-
-    // 处理可读错误码，保证没有特殊字符
+    /**
+     * 处理可读错误码，保证没有特殊字符
+     */
     private static void processReadableErrorCode() {
         NON_STANDARD_READABLE_ERROR_CODE.clear();
         for (Map.Entry<Object, Object> entry : readableErrorCode.entrySet()) {
@@ -101,8 +104,8 @@ public class ErrorCode {
      */
     public static String logMessage(@PropertyKey(resourceBundle = ErrorCode.BUNDLE)
                                             String key, Object... params) {
-        boolean canNotCache = params != null && params.length > 0;
-        if (!canNotCache) {
+        boolean exitsParams = params != null && params.length > 0;
+        if (!exitsParams) {
             String result = CACHED_LOG_MESSAGE.get(key);
             if (result != null) {
                 return result;
@@ -115,7 +118,7 @@ public class ErrorCode {
             log.error(logMessage, e);
         }
         String result = "{c:" + key + "," + "m:" + logMessage + "}";
-        if (!canNotCache) {
+        if (!exitsParams) {
             CACHED_LOG_MESSAGE.put(key, result);
         }
         return result;
@@ -137,13 +140,7 @@ public class ErrorCode {
                 return result;
             }
         }
-        String logMessage = "log message cannot be retrieved properly";
-        try {
-            logMessage = searchKeyInAllResourceFile(internalErrorMessage, key, DEFAULT_LOG_ERROR_MESSAGE, params);
-        } catch (Exception e) {
-            log.error(logMessage, e);
-        }
-        String result = logMessage;
+        String result = searchKeyInAllResourceFile(internalErrorMessage, key, DEFAULT_LOG_ERROR_MESSAGE, params);
         if (!canNotCache) {
             CACHED_LOG_MESSAGE.put(key, result);
         }
@@ -161,7 +158,6 @@ public class ErrorCode {
         return searchKeyInAllResourceFile(displayErrorCodes, key, DEFAULT_DISPLAY_ERROR_MESSAGE, params);
     }
 
-
     private static String searchKeyInAllResourceFile(Map<Object, Object> props,
                                                      String key,
                                                      String defaultValue, Object... params) {
@@ -174,19 +170,23 @@ public class ErrorCode {
         return message != null && message.length() > 0 ? message : defaultValue;
     }
 
-
     private static String buildMessage(Object obj, Object[] params) {
-        String message = String.valueOf(obj);
+        String value = String.valueOf(obj);
+        String message = value;
 
-        if (params != null && params.length > 0 && message != null && message.indexOf('{') >= 0) {
-            message = MessageFormat.format(message, params);
+        try {
+            if (params != null && params.length > 0 && message != null && message.indexOf('{') >= 0) {
+                message = MessageFormat.format(message, params);
+            }
+
+            //可能是编码的问题,有些 bug,上面的 format 可能会失败.
+            if (params != null && params.length > 0 && message != null && message.contains("{0}")) {
+                message = MessageFormat.format(message, params);
+            }
+        } catch (Exception e) {
+            log.error("log message cannot be retrieved properly", e);
+            return value;
         }
-
-        //可能是编码的问题,有些 bug,上面的 format 可能会失败.
-        if (params != null && params.length > 0 && message != null && message.contains("{0}")) {
-            message = MessageFormat.format(message, params);
-        }
-
         return message;
     }
 
@@ -217,13 +217,15 @@ public class ErrorCode {
             Enumeration<URL> resources = classLoader.getResources(resourceFilePath);
             while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
-                InputStream in = url.openStream();
-                Properties prop = new Properties();
-                prop.load(new InputStreamReader(in, "UTF-8"));
+                Properties prop;
+                try (InputStream in = url.openStream()) {
+                    prop = new Properties();
+                    prop.load(new InputStreamReader(in, StandardCharsets.UTF_8));
+                }
                 if (replaceEnglishWords) {
                     for (Map.Entry<Object, Object> entry : prop.entrySet()) {
                         //如果全是英文,则替换为默认文案
-                        if (!hasChineseCharacter(String.valueOf(entry.getValue()))) {
+                        if (ErrorCode.notExistChineseCharacter(String.valueOf(entry.getValue()))) {
                             entry.setValue(replaceText);
                         }
                     }
@@ -236,14 +238,18 @@ public class ErrorCode {
         return props;
     }
 
-    public static final boolean hasChineseCharacter(String chineseStr) {
+    public static boolean existChineseCharacter(String chineseStr) {
         char[] charArray = chineseStr.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            if ((charArray[i] >= 0x4e00) && (charArray[i] <= 0x9fbb)) {
+        for (char c : charArray) {
+            if ((c >= 0x4e00) && (c <= 0x9fbb)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean notExistChineseCharacter(String chineseStr) {
+        return !ErrorCode.existChineseCharacter(chineseStr);
     }
 
     private static Map<Object, Object> extractContextErrorCodes(String resourceFilePath,
@@ -256,7 +262,6 @@ public class ErrorCode {
                 replaceText));
         return props;
     }
-
 
     /**
      * 这个方法会从当前模块的resources/i18n/errors.properties文件中解析出错误码和错误文案

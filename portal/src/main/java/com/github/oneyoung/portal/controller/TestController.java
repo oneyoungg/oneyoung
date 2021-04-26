@@ -6,8 +6,6 @@ import com.oneyoung.common.result.Result;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 /**
  * TestController
  *
@@ -28,5 +26,10 @@ public class TestController {
     @PostMapping("exception")
     public Result<String> exception(@RequestBody CallRequest name) {
         throw new PortalException("PORTAL_EXCEPTION");
+    }
+
+    @GetMapping("c")
+    public Result<String> exception() {
+        throw new PortalException("TEST_EXCEPTION");
     }
 }

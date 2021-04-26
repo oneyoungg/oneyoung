@@ -112,7 +112,7 @@ public class ErrorMessage implements Serializable {
          */
         if (displayMessage ==null || displayMessage.length() ==0 ||
             (!isChineseDisplayMessage
-                && !ErrorCode.hasChineseCharacter(displayMessage))) {
+                && ErrorCode.notExistChineseCharacter(displayMessage))) {
             this.displayErrorMessage = ErrorCode.DEFAULT_DISPLAY_ERROR_MESSAGE;
         }
 

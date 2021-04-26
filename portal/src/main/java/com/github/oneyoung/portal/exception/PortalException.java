@@ -13,10 +13,6 @@ public class PortalException extends RuntimeException {
     private static final long serialVersionUID = 3093550613739905915L;
 
     public PortalException(String key) {
-        super(ErrorMessage.code(key, (Object) null).getDisplayErrorMessage());
-    }
-
-    public PortalException(String key, Object[] args) {
-        super(ErrorMessage.code(key, args).getDisplayErrorMessage());
+        super(ErrorMessage.code(key).getDisplayErrorMessage());
     }
 }
