@@ -18,7 +18,7 @@ import java.util.Map;
 @ToString
 public class Result<T> implements Serializable {
 
-    private static final long serialVersionUID = -1657827328121101377L;
+    private static final long serialVersionUID = -4383894792491700248L;
     /**
      * 返回结果
      */
@@ -47,8 +47,6 @@ public class Result<T> implements Serializable {
 
     /**
      * 字段验证错误信息
-     *
-     * @since 2020-11-27 新版本使用
      */
     private Map<String, ?> validateErrors = new HashMap<>();
 

@@ -1,9 +1,13 @@
 package com.oneyoung.common.result;
 
+import lombok.Getter;
+
 /**
+ * 错误码枚举类
  *
  * @author oneyoung
  */
+@Getter
 public enum ResultCode {
     /**
      * SYSTEM ERROR
@@ -15,7 +19,7 @@ public enum ResultCode {
      */
     PARAM_ERROR("PARAM_ERROR");
 
-    public String code;
+    private final String code;
 
     ResultCode(String code) {
         this.code = code;

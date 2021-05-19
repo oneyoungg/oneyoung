@@ -1,6 +1,7 @@
 package com.github.oneyoung.portal.aspect;
 
 
+import com.oneyoung.common.message.ErrorCodeException;
 import com.oneyoung.common.result.Result;
 import com.oneyoung.common.result.Results;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -9,7 +10,6 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -21,8 +21,8 @@ import javax.validation.ConstraintViolationException;
 /**
  * 处理所有出去的Service的异常结果，转换为Result.fail
  *
- * @author luyan
- * @since 2019/12/13 16:11
+ * @author oneyoung
+ * @since 2020/12/13 16:11
  */
 @Aspect
 @Component
@@ -47,10 +47,13 @@ public class ServiceThrowableAspect {
         long startTime = System.currentTimeMillis();
         Result<?> result = null;
         Throwable throwable = null;
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+//        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         // 只能处理这一类返回值类型的
         try {
             result = (Result<?>) joinPoint.proceed();
+            return result;
+        }catch (ErrorCodeException e){
+            result = e.toResult();
             return result;
         } catch (IllegalArgumentException | UnsupportedOperationException t) {
             throwable = t;

@@ -1,10 +1,11 @@
 package com.oneyoung.common.result;
 
+import com.oneyoung.common.message.ErrorMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.io.Serializable;
 import java.util.Date;
@@ -12,11 +13,11 @@ import java.util.stream.Collectors;
 
 /**
  * 封装并返回Result的工具类
+ *
  * @author oneyoung
  */
+@Slf4j
 public class Results implements Serializable {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Results.class);
 
     private static final long serialVersionUID = 6965363157096051291L;
 
@@ -27,7 +28,7 @@ public class Results implements Serializable {
             result.getHeader().setRpcId(RandomStringUtils.randomAlphanumeric(32));
             result.getHeader().setDate(new Date());
         } catch (Exception e) {
-            LOGGER.error("初始化Result.Header异常", e);
+            log.error("初始化Result.Header异常", e);
         }
     }
 
@@ -74,8 +75,8 @@ public class Results implements Serializable {
     }
 
     public static <T> Result<T> failErrorCode(String errorCode, Object... args) {
-//        String message = ErrorCode.displayMessage(errorCode, args);
-        return fail(errorCode, null);
+        String message = ErrorMessage.of(errorCode, args).getMessage();
+        return fail(errorCode, message);
     }
 
     public static <T> Result<T> failIllegalArgument(String message) {
@@ -83,7 +84,7 @@ public class Results implements Serializable {
     }
 
     public static <T> Result<T> failIllegalArgument(T data, String message) {
-        return fail(data, ResultCode.PARAM_ERROR.code, message);
+        return fail(data, ResultCode.PARAM_ERROR.getCode(), message);
     }
 
     public static <T> Result<T> failSystemError(String message) {
@@ -91,19 +92,19 @@ public class Results implements Serializable {
     }
 
     public static <T> Result<T> failSystemError(T data, String message) {
-        return fail(data, message, ResultCode.SYSTEM_ERROR.code);
+        return fail(data, message, ResultCode.SYSTEM_ERROR.getCode());
     }
 
     public static <T> Result<T> failException(Exception exception) {
-        return fail(null, ResultCode.SYSTEM_ERROR.code, exception.getMessage());
+        return fail(null, ResultCode.SYSTEM_ERROR.getCode(), exception.getMessage());
     }
 
     public static <T> Result<T> failException(Throwable throwable) {
-        return fail(null, ResultCode.SYSTEM_ERROR.code, throwable.getMessage());
+        return fail(null, ResultCode.SYSTEM_ERROR.getCode(), throwable.getMessage());
     }
 
     public static <T> Result<T> failValidation(ConstraintViolationException t) {
-        String messages = t.getConstraintViolations().stream().map(item -> item.getMessage()).collect(Collectors.joining("; "));
+        String messages = t.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining("; "));
         return Results.failIllegalArgument(messages);
     }
 

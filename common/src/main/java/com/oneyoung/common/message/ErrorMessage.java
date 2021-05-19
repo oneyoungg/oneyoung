@@ -17,10 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 public class ErrorMessage implements Serializable {
 
+    private static final long serialVersionUID = 7169459647378586538L;
 
     public static final String DEFAULT_CODE = "SYSTEM ERROR";
-    public static final Map<Locale, Map<String, ErrorMessage>> MESSAGE_CACHE = new ConcurrentHashMap<>();
-    private static final long serialVersionUID = -4407557490520280740L;
+    private static final Map<Locale, Map<String, ErrorMessage>> MESSAGE_CACHE = new ConcurrentHashMap<>();
+    private static Locale activeLoc = Locale.getDefault();
     private final String errorCode;
 
     private final String message;
@@ -40,14 +41,18 @@ public class ErrorMessage implements Serializable {
     public static ErrorMessage of(Locale locale, String key, Object... params) {
         boolean canCache = params == null || params.length <= 0;
         if (canCache) {
-            Map<String, ErrorMessage> messageMap = MESSAGE_CACHE.computeIfAbsent(locale, item -> new HashMap<>(16));
+            Map<String, ErrorMessage> messageMap = MESSAGE_CACHE.computeIfAbsent(locale, item -> new HashMap<>(128));
             return messageMap.computeIfAbsent(key, item -> I18n.toErrorMessage(locale, key, params));
         }
         return I18n.toErrorMessage(locale, key, params);
     }
 
-    public static ErrorMessage defaultLocalOf(String key, Object... params) {
-        return of(Locale.CHINA, key, params);
+    public static ErrorMessage of(String key, Object... params) {
+        return of(activeLoc, key, params);
+    }
+
+    public static void configure(Locale locale) {
+        activeLoc = locale;
     }
 
 
