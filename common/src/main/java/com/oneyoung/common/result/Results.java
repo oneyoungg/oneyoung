@@ -1,7 +1,5 @@
 package com.oneyoung.common.result;
 
-import com.oneyoung.common.message.ErrorCode;
-import com.oneyoung.common.message.ErrorCodeException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.slf4j.Logger;
@@ -76,8 +74,8 @@ public class Results implements Serializable {
     }
 
     public static <T> Result<T> failErrorCode(String errorCode, Object... args) {
-        String message = ErrorCode.displayMessage(errorCode, args);
-        return fail(errorCode, message);
+//        String message = ErrorCode.displayMessage(errorCode, args);
+        return fail(errorCode, null);
     }
 
     public static <T> Result<T> failIllegalArgument(String message) {
@@ -94,10 +92,6 @@ public class Results implements Serializable {
 
     public static <T> Result<T> failSystemError(T data, String message) {
         return fail(data, message, ResultCode.SYSTEM_ERROR.code);
-    }
-
-    public static <T> Result<T> failException(ErrorCodeException errorCodeException) {
-        return fail(null, errorCodeException.getErrorCode(), errorCodeException.getErrorMessage());
     }
 
     public static <T> Result<T> failException(Exception exception) {
