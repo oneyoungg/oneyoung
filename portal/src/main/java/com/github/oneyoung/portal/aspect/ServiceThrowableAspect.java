@@ -1,9 +1,9 @@
 package com.github.oneyoung.portal.aspect;
 
 
-import com.oneyoung.common.message.ErrorCodeException;
-import com.oneyoung.common.result.Result;
-import com.oneyoung.common.result.Results;
+import com.github.oneyoung.common.message.ErrorCodeException;
+import com.github.oneyoung.common.result.Result;
+import com.github.oneyoung.common.result.Results;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;

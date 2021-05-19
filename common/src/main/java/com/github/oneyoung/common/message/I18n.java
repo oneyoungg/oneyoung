@@ -1,4 +1,4 @@
-package com.oneyoung.common.message;
+package com.github.oneyoung.common.message;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

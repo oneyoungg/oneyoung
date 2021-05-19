@@ -2,7 +2,7 @@ package com.github.oneyoung.portal.controller;
 
 import com.github.oneyoung.portal.entity.CallRequest;
 import com.github.oneyoung.portal.exception.PortalException;
-import com.oneyoung.common.result.Result;
+import com.github.oneyoung.common.result.Result;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

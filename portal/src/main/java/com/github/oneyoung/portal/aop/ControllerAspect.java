@@ -1,6 +1,6 @@
 package com.github.oneyoung.portal.aop;
 
-import com.oneyoung.common.result.Result;
+import com.github.oneyoung.common.result.Result;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;

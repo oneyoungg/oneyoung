@@ -1,7 +1,7 @@
-package com.oneyoung.common.message;
+package com.github.oneyoung.common.message;
 
-import com.oneyoung.common.result.Result;
-import com.oneyoung.common.result.Results;
+import com.github.oneyoung.common.result.Result;
+import com.github.oneyoung.common.result.Results;
 
 import java.util.Locale;
 

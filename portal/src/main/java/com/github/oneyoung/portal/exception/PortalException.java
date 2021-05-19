@@ -1,6 +1,6 @@
 package com.github.oneyoung.portal.exception;
 
-import com.oneyoung.common.message.ErrorCodeException;
+import com.github.oneyoung.common.message.ErrorCodeException;
 
 /**
  * PortalException
