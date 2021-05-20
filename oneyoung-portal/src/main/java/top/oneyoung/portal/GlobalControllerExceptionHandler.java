@@ -1,7 +1,5 @@
 package top.oneyoung.portal;
 
-import top.oneyoung.common.result.Result;
-import top.oneyoung.common.result.Results;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +13,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
+import top.oneyoung.common.result.Result;
+import top.oneyoung.common.result.Results;
 
 import java.util.List;
 
@@ -55,10 +55,11 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 String defaultMessage = error.getDefaultMessage();
                 Object rejectedValue = error.getRejectedValue();
                 String message = "object '" + objectName + "' field '" + field +
-                        "': rejected value [" + ObjectUtils.nullSafeToString(rejectedValue) + "];" + "message ' " + defaultMessage + " ';";
+                        "': rejected value [" + ObjectUtils.nullSafeToString(rejectedValue) + "]" + " message [ " + defaultMessage + " ];";
                 stringBuilder.append(message);
             }
             result = Results.failIllegalArgument(stringBuilder.toString());
+            resultResponseEntity = ResponseEntity.badRequest().body(result);
         }
         if (ex instanceof NoHandlerFoundException) {
             resultResponseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);

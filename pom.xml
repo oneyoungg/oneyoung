@@ -68,12 +68,12 @@
             <dependency>
                 <groupId>top.oneyoung</groupId>
                 <artifactId>oneyoung-common</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>top.oneyoung</groupId>
                 <artifactId>oneyoung-portal</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
 
