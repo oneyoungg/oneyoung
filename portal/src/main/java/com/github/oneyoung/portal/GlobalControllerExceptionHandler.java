@@ -12,6 +12,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
@@ -42,6 +43,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Result<Object> result = Results.failException(ex);
+        ResponseEntity<Object> resultResponseEntity = ResponseEntity.badRequest().body(result);
         if (ex instanceof MethodArgumentNotValidException) {
             MethodArgumentNotValidException validException = (MethodArgumentNotValidException) ex;
             BindingResult bindingResult = validException.getBindingResult();
@@ -57,9 +59,11 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 stringBuilder.append(message);
             }
             result = Results.failIllegalArgument(stringBuilder.toString());
-
+        }
+        if (ex instanceof NoHandlerFoundException) {
+            resultResponseEntity = ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
         }
         log.error("request error, error result: " + result, ex);
-        return ResponseEntity.badRequest().body(result);
+        return resultResponseEntity;
     }
 }
