@@ -23,6 +23,21 @@
         </developer>
     </developers>
 
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://oneyoung.top</url>
+        <connection>scm:git:https://www.github.com/oneyoungg/oneyoung.git</connection>
+        <developerConnection>scm:git:https://www.github.com/oneyoungg/oneyoung.git</developerConnection>
+    </scm>
+
+
     <properties>
         <java.version>1.8</java.version>
         <spring-boot.version>2.4.5</spring-boot.version>
@@ -99,8 +114,32 @@
                         </excludes>
                     </configuration>
                 </plugin>
+
+                <!-- gpg plugin,用于签名认证 -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+        </plugins>
+
     </build>
 
     <repositories>
@@ -149,5 +188,18 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
+
+
+    <!-- 这里引入 Settings.xml 中设置的用户名、密码 -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-snapshot</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
