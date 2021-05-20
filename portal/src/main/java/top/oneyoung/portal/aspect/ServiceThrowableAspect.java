@@ -1,9 +1,9 @@
-package com.github.oneyoung.portal.aspect;
+package top.oneyoung.portal.aspect;
 
 
-import com.github.oneyoung.common.message.ErrorCodeException;
-import com.github.oneyoung.common.result.Result;
-import com.github.oneyoung.common.result.Results;
+import top.oneyoung.common.message.ErrorCodeException;
+import top.oneyoung.common.result.Result;
+import top.oneyoung.common.result.Results;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -30,7 +30,7 @@ public class ServiceThrowableAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceThrowableAspect.class);
 
-    @Pointcut("execution(* com.github.oneyoung.portal.controller.*.*(..))")
+    @Pointcut("execution(* top.oneyoung.portal.controller.*.*(..))")
     public void service() {
         // do nothing
     }

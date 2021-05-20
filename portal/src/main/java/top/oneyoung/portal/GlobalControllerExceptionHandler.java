@@ -1,7 +1,7 @@
-package com.github.oneyoung.portal;
+package top.oneyoung.portal;
 
-import com.github.oneyoung.common.result.Result;
-import com.github.oneyoung.common.result.Results;
+import top.oneyoung.common.result.Result;
+import top.oneyoung.common.result.Results;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

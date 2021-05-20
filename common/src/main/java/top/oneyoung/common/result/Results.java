@@ -1,6 +1,6 @@
-package com.github.oneyoung.common.result;
+package top.oneyoung.common.result;
 
-import com.github.oneyoung.common.message.ErrorMessage;
+import top.oneyoung.common.message.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;

@@ -1,4 +1,4 @@
-package com.github.oneyoung.common.result;
+package top.oneyoung.common.result;
 
 import lombok.Getter;
 

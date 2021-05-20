@@ -14,8 +14,8 @@
         <version>2.4.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.github</groupId>
-    <artifactId>oneyoung</artifactId>
+    <groupId>top.oneyoung</groupId>
+    <artifactId>parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>oneyoung</name>
     <description>Demo project for Spring Boot</description>
@@ -66,14 +66,14 @@
             </dependency>
 
             <dependency>
-                <groupId>com.github</groupId>
-                <artifactId>oneyoung-common</artifactId>
-                <version>${project.version}</version>
+                <groupId>top.oneyoung</groupId>
+                <artifactId>common</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
-                <groupId>com.github</groupId>
-                <artifactId>oneyoung-portal</artifactId>
-                <version>${project.version}</version>
+                <groupId>top.oneyoung</groupId>
+                <artifactId>portal</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
 

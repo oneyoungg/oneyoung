@@ -1,4 +1,4 @@
-package com.github.oneyoung.portal.entity;
+package top.oneyoung.portal.entity;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
