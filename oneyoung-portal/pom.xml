@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>portal</artifactId>
+    <artifactId>oneyoung-portal</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>top.oneyoung</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>oneyoung-common</artifactId>
         </dependency>
 
         <dependency>
