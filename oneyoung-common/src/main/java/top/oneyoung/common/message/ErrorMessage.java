@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * ErrorMessage
  *
  * @author oneyoung
- * @date 2021/5/19 14:26
+ * @since 2021/5/19 14:26
  */
 @Getter
 public class ErrorMessage implements Serializable {

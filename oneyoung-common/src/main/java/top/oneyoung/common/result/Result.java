@@ -69,12 +69,15 @@ public class Result<T> implements Serializable {
 
     /**
      * @see Results
+     * @param t data
+     * @return result
      */
     public static <T> Result<T> success(T t) {
         return Results.success(t);
     }
 
     /**
+     * @param message message
      * @see Results
      */
     public static <T> Result<T> success(T t, String message) {
@@ -82,6 +85,8 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * @param errorCode
+     * @param message
      * @see Results
      */
     public static <T> Result<T> failure(String errorCode, String message) {
@@ -89,6 +94,10 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * @param t
+     * @param errorCode
+     * @param message
+     * @return result
      * @see Results
      */
     public static <T> Result<T> failure(T t, String errorCode, String message) {

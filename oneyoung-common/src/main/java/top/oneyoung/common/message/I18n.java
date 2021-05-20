@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * ResourceEnum
  *
  * @author oneyoung
- * @date 2021/5/19 11:38
+ * @since 2021/5/19 11:38
  */
 @Slf4j
 @Getter
@@ -53,6 +53,7 @@ public enum I18n implements Serializable {
     /**
      * 获取供日志使用的内部错误文案。
      *
+     * @param i18N i18n
      * @param key    error code
      * @param params params to build the error message
      * @return log Message

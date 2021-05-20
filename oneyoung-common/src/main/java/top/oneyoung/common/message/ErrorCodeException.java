@@ -85,9 +85,6 @@ public class ErrorCodeException extends RuntimeException {
         return getErrorCode() + ":" + getErrorMessage();
     }
 
-    /**
-     * 转换为返回结果
-     */
     public <T> Result<T> toResult() {
         return Results.fail(errorMessage.getErrorCode(),errorMessage.getMessage());
     }

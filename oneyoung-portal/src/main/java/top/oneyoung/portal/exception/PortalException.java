@@ -6,7 +6,7 @@ import top.oneyoung.common.message.ErrorCodeException;
  * PortalException
  *
  * @author oneyoung
- * @date 2021/4/25 17:18
+ * @since 2021/4/25 17:18
  */
 public class PortalException extends ErrorCodeException {
 
