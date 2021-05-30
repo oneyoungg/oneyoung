@@ -12,17 +12,32 @@ import java.util.Locale;
  */
 public class ErrorCodeException extends RuntimeException {
 
-    private static final long serialVersionUID = -6165816768698217146L;
-
+    /**
+     * default error message
+     */
     public static final ErrorMessage DEFAULT_ERROR_MESSAGE = ErrorMessage.of(ErrorMessage.DEFAULT_CODE, "系统错误！", Locale.CHINA);
-
+    /**
+     * serialVersionUID
+     */
+    private static final long serialVersionUID = -6165816768698217146L;
+    /**
+     * error message
+     */
     protected final ErrorMessage errorMessage;
 
+    /**
+     * default construct
+     * init errorMessage as DEFAULT_ERROR_MESSAGE
+     */
     public ErrorCodeException() {
         super();
         this.errorMessage = DEFAULT_ERROR_MESSAGE;
     }
 
+    /**
+     *
+     * @param key the error code
+     */
     public ErrorCodeException(String key) {
         this(toErrorMessage(key));
     }
@@ -86,7 +101,7 @@ public class ErrorCodeException extends RuntimeException {
     }
 
     public <T> Result<T> toResult() {
-        return Results.fail(errorMessage.getErrorCode(),errorMessage.getMessage());
+        return Results.fail(errorMessage.getErrorCode(), errorMessage.getMessage());
     }
 
 }
