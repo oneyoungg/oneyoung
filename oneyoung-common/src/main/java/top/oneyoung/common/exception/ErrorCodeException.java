@@ -1,5 +1,6 @@
-package top.oneyoung.common.message;
+package top.oneyoung.common.exception;
 
+import top.oneyoung.i18n.ErrorMessage;
 import top.oneyoung.common.result.Result;
 import top.oneyoung.common.result.Results;
 

@@ -5,16 +5,15 @@
     <parent>
         <groupId>top.oneyoung</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>oneyoung-common</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <oneyoung-i18n.version>0.0.3</oneyoung-i18n.version>
     </properties>
 
     <dependencies>
@@ -33,6 +32,11 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.oneyoung</groupId>
+            <artifactId>oneyoung-i18n</artifactId>
+            <version>${oneyoung-i18n.version}</version>
         </dependency>
     </dependencies>
 

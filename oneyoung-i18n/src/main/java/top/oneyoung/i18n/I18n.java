@@ -1,4 +1,4 @@
-package top.oneyoung.common.message;
+package top.oneyoung.i18n;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

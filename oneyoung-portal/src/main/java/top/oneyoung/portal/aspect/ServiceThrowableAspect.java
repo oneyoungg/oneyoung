@@ -1,7 +1,7 @@
 package top.oneyoung.portal.aspect;
 
 
-import top.oneyoung.common.message.ErrorCodeException;
+import top.oneyoung.common.exception.ErrorCodeException;
 import top.oneyoung.common.result.Result;
 import top.oneyoung.common.result.Results;
 import org.aspectj.lang.ProceedingJoinPoint;

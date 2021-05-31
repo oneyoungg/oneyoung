@@ -1,0 +1,11 @@
+{
+    "properties": [
+        {
+            "name": "oneyoung.i18n.active",
+            "type": "java.util.Locale",
+            "description": "Description for oneyoung.i18n.active.",
+            "defaultValue": [
+                "zh_CN"
+            ]
+    }
+] }

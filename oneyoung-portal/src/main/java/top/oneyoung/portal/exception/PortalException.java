@@ -1,6 +1,6 @@
 package top.oneyoung.portal.exception;
 
-import top.oneyoung.common.message.ErrorCodeException;
+import top.oneyoung.common.exception.ErrorCodeException;
 
 /**
  * PortalException

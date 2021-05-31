@@ -1,9 +1,10 @@
 package top.oneyoung.common.result;
 
-import top.oneyoung.common.message.ErrorMessage;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.validator.internal.engine.path.PathImpl;
+import top.oneyoung.i18n.ErrorMessage;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;

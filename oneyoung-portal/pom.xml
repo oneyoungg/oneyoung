@@ -5,16 +5,15 @@
     <parent>
         <groupId>top.oneyoung</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>oneyoung-portal</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <oneyoung-i18n-starter.version>0.0.3</oneyoung-i18n-starter.version>
     </properties>
 
     <dependencies>
@@ -36,6 +35,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>top.oneyoung</groupId>
+            <artifactId>oneyoung-i18n-starter</artifactId>
+            <version>${oneyoung-i18n-starter.version}</version>
         </dependency>
     </dependencies>
 
