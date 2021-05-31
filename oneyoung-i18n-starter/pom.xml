@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>oneyoung-i18n-starter</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
 
     <properties>
         <oneyoung-i18n.version>0.0.3</oneyoung-i18n.version>
