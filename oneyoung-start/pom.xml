@@ -23,6 +23,13 @@
         <dependency>
             <groupId>top.oneyoung</groupId>
             <artifactId>oneyoung-portal</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
