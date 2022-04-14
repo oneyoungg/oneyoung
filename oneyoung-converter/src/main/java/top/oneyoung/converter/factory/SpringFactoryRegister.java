@@ -10,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import top.oneyoung.converter.Converter;
-import top.oneyoung.converter.Filler;
-import top.oneyoung.converter.Merger;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -36,10 +34,6 @@ public class SpringFactoryRegister implements BeanPostProcessor, ApplicationList
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof Converter) {
             ConverterFactory.register((Converter<?, ?>) bean);
-        } else if (bean instanceof Merger) {
-            MergerFactory.register((Merger<?, ?>) bean);
-        } else if (bean instanceof Filler) {
-            FillerFactory.register((Filler<?, ?>) bean);
         }
         return bean;
     }

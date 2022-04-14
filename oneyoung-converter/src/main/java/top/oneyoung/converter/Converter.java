@@ -1,6 +1,6 @@
 package top.oneyoung.converter;
 
-import top.oneyoung.converter.stream.ConverterStream;
+import top.oneyoung.converter.factory.ConverterProxy;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,26 +19,26 @@ public interface Converter<I, O> extends Function<I, O> {
      *
      * @param input       输入
      * @param outputClass 输出class
-     * @param <I> 输入
-     * @param <O> 输出
+     * @param <I>         输入
+     * @param <O>         输出
      * @return 输出
      */
     static <I, O> O directConvert(I input, Class<O> outputClass) {
         if (input == null) {
             return null;
         }
-        return ConverterStream.from(input).convert(outputClass).get();
+        return new ConverterProxy<I, O>((Class<I>) input.getClass(), outputClass, false).convert(input);
     }
 
 
     /**
      * 普通类存在继承时，可指定父类
      *
-     * @param input 输入
-     * @param inputClass 输入class
+     * @param input       输入
+     * @param inputClass  输入class
      * @param outputClass 输出class
-     * @param <I> 输入
-     * @param <O> 输出
+     * @param <I>         输入
+     * @param <O>         输出
      * @return 输出
      */
     static <I, O> O directConvert(I input, Class<? super I> inputClass, Class<O> outputClass) {
