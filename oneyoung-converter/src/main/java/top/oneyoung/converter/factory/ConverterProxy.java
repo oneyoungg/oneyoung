@@ -13,10 +13,8 @@ public class ConverterProxy<I, O> implements Converter<I, O> {
 
     private final Converter<I, O> delegate;
 
-    private static final boolean AUTO_CONVERT = true;
-
     public ConverterProxy(Class<I> inputClass, Class<O> outputClass, boolean collection) {
-        this.delegate = ConverterFactory.getConverter(inputClass, outputClass, collection, AUTO_CONVERT);
+        this.delegate = ConverterFactory.getConverter(inputClass, outputClass, collection);
     }
 
     @Override

@@ -12,7 +12,10 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
+ * 转换器代码生成器
+ *
  * @author oneyoung
+ * @since 2022/4/1
  */
 public class ConverterGenerator {
 
@@ -81,7 +84,6 @@ public class ConverterGenerator {
             }
         }
         fieldGetAndSetBuilder.append(TABLE)
-                .append(TABLE).append("System.out.println(\"from auto generate\");")
                 .append(TABLE).append("return target;");
         return fieldGetAndSetBuilder.toString();
     }

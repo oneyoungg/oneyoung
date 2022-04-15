@@ -1,4 +1,4 @@
-package top.oneyoung.converter.factory;
+package top.oneyoung.converter.starter;
 
 
 import org.slf4j.Logger;
@@ -6,10 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import top.oneyoung.converter.Converter;
+import top.oneyoung.converter.factory.ConverterFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -41,20 +40,11 @@ public class SpringFactoryRegister implements BeanPostProcessor, ApplicationList
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!hasProcessed.compareAndSet(false, true)) {
-            System.out.println("Ignore Spring & SpringMVC ContextRefreshedEvent Second Times.");
+            LOGGER.info("Ignore Spring & SpringMVC ContextRefreshedEvent Second Times.");
             return;
         }
         for (String s : ConverterFactory.convertListString()) {
-
-        }
-    }
-
-    @Configuration
-    public static class FactoryAutoConfiguration {
-
-        @Bean
-        public SpringFactoryRegister converterFactorySpring() {
-            return new SpringFactoryRegister();
+            LOGGER.info("ConverterFactory Register: {}", s);
         }
     }
 }

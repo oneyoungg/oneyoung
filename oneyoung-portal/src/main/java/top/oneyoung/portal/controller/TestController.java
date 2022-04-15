@@ -1,10 +1,13 @@
 package top.oneyoung.portal.controller;
 
-import top.oneyoung.common.result.Result;
-import top.oneyoung.portal.entity.CallRequest;
-import top.oneyoung.portal.exception.PortalException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.oneyoung.common.result.Result;
+import top.oneyoung.converter.Converter;
+import top.oneyoung.portal.entity.CallRequest;
+import top.oneyoung.portal.entity.Request;
+import top.oneyoung.portal.entity.Response;
+import top.oneyoung.portal.exception.PortalException;
 
 import javax.validation.Valid;
 
@@ -33,5 +36,10 @@ public class TestController {
     @GetMapping("c")
     public Result<String> exception() {
         throw new PortalException("TEST_EXCEPTION");
+    }
+
+    @GetMapping("convert")
+    public Result<Response> convert(Request request) {
+        return Result.success(Converter.directConvert(request, Response.class));
     }
 }

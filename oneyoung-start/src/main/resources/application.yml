@@ -13,3 +13,5 @@ spring:
 oneyoung:
   i18n:
     active: en_US
+  converter:
+    auto-convert: true

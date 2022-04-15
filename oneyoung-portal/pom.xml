@@ -42,6 +42,12 @@
             <artifactId>oneyoung-i18n-starter</artifactId>
             <version>${oneyoung-i18n-starter.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>top.oneyoung</groupId>
+            <artifactId>oneyoung-converter-starter</artifactId>
+            <version>0.0.3</version>
+        </dependency>
     </dependencies>
 
 

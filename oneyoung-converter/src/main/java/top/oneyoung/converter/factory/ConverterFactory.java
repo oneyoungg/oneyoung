@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 /**
- * 包级别可见，对外不可见。
+ * 转换器工厂
  *
  * @author oneyoung
  * @since 18/10/23
@@ -20,18 +20,22 @@ public class ConverterFactory extends AbstractFactory {
     static final Map<ConverterCacheKey, Converter<?, ?>> CONVERTS = new HashMap<>();
 
     /**
+     * 是否自动转换
+     */
+    public static boolean autoConvert = false;
+
+    /**
      * 获取转换器
      *
      * @param inputClass  输入类型
      * @param outputClass 输出类型
      * @param collection  是否是集合
-     * @param autoConvert 是否自动转换
      * @param <I>         输入类型
      * @param <O>         输出类型
      * @return 转换器
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <I, O> Converter<I, O> getConverter(Class<I> inputClass, Class<O> outputClass, boolean collection, boolean autoConvert) {
+    public static <I, O> Converter<I, O> getConverter(Class<I> inputClass, Class<O> outputClass, boolean collection) {
         ConverterCacheKey converterCacheKey = new ConverterCacheKey(inputClass, outputClass, collection);
         // 尝试获取转换器
         Converter<I, O> converter = (Converter<I, O>) CONVERTS.get(converterCacheKey);
@@ -93,7 +97,7 @@ public class ConverterFactory extends AbstractFactory {
         CONVERTS.put(converterCacheKey, converter);
     }
 
-    static List<String> convertListString() {
+    public static List<String> convertListString() {
         List<String> list = new ArrayList<>(CONVERTS.size());
         CONVERTS.forEach((k, v) -> {
             if (k.collection) {
@@ -104,6 +108,14 @@ public class ConverterFactory extends AbstractFactory {
 
         });
         return list;
+    }
+
+    public static void setAutoConvert(boolean autoConvert) {
+        ConverterFactory.autoConvert = autoConvert;
+    }
+
+    public static boolean isAutoConvert() {
+        return ConverterFactory.autoConvert;
     }
 
     /**
@@ -150,5 +162,4 @@ public class ConverterFactory extends AbstractFactory {
                     '}';
         }
     }
-
 }
