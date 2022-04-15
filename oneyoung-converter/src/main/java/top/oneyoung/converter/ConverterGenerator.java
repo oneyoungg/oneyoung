@@ -1,7 +1,6 @@
 package top.oneyoung.converter;
 
 
-import org.springframework.stereotype.Component;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 import top.oneyoung.converter.model.ClassInfo;
 import top.oneyoung.converter.util.ClassUtil;
@@ -10,10 +9,7 @@ import top.oneyoung.converter.util.StringUtil;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author oneyoung
@@ -25,19 +21,17 @@ public class ConverterGenerator {
     private static final String SOURCE_GET_PREFIX = "source.";
     private static final String TABLE = "    ";
 
+    private ConverterGenerator() {
+    }
+
     public static String generateCode(Class<?> source, Class<?> target) {
         checkArgument(source, target);
-        String importConverterStatement = generateImportStatement(Converter.class);
-        String importSourceStatement = generateImportStatement(source);
-        String importTargetStatement = generateImportStatement(target);
-        String importComponentStatement = generateImportStatement(Component.class);
+        String importConverterStatement = generateImportStatement(Arrays.asList(Converter.class, source, target));
         String converterClassName = source.getSimpleName() + "To" + target.getSimpleName() + "Converter implements Converter<" + source.getSimpleName() + ", " + target.getSimpleName() + "> ";
         String methodName = "convert";
 
-        String classContent = importConverterStatement + ENTER
-                + importSourceStatement + ENTER
-                + importTargetStatement + ENTER
-                + importComponentStatement + ENTER
+        return importConverterStatement
+                + "import org.springframework.stereotype.Component;" + ENTER
                 + ENTER
                 + "@Component"
                 + ENTER
@@ -49,7 +43,6 @@ public class ConverterGenerator {
                 + generateMethodContent(source, target) + ENTER
                 + TABLE + "}" + ENTER
                 + "}";
-        return classContent;
     }
 
     /**
@@ -87,7 +80,9 @@ public class ConverterGenerator {
                         .append(ENTER);
             }
         }
-        fieldGetAndSetBuilder.append(TABLE).append(TABLE).append("return target;");
+        fieldGetAndSetBuilder.append(TABLE)
+                .append(TABLE).append("System.out.println(\"from auto generate\");")
+                .append(TABLE).append("return target;");
         return fieldGetAndSetBuilder.toString();
     }
 
@@ -115,10 +110,18 @@ public class ConverterGenerator {
 
     /**
      * 生成导入语句 import xxx;
+     *
+     * @param classList 类
+     * @return 导入语句
      */
-    private static String generateImportStatement(Class<?> clazz) {
-        return "import " + clazz.getCanonicalName() + ";";
+    private static String generateImportStatement(List<Class<?>> classList) {
+        StringBuilder importStatementBuilder = new StringBuilder();
+        for (Class<?> clazz : classList) {
+            importStatementBuilder.append("import ").append(clazz.getCanonicalName()).append(";").append(ENTER);
+        }
+        return importStatementBuilder.toString();
     }
+
 
     /**
      * 入参不能为空

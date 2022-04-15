@@ -1,8 +1,9 @@
 package top.oneyoung.converter.factory;
 
-import org.springframework.beans.BeanUtils;
+import net.openhft.compiler.CompilerUtils;
 import top.oneyoung.converter.Converter;
 import top.oneyoung.converter.ConverterGenerator;
+import top.oneyoung.converter.exception.ConvertException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -14,30 +15,57 @@ import java.util.*;
  * @author oneyoung
  * @since 18/10/23
  */
-class ConverterFactory extends AbstractFactory {
+public class ConverterFactory extends AbstractFactory {
 
     static final Map<ConverterCacheKey, Converter<?, ?>> CONVERTS = new HashMap<>();
 
+    /**
+     * 获取转换器
+     *
+     * @param inputClass  输入类型
+     * @param outputClass 输出类型
+     * @param collection  是否是集合
+     * @param autoConvert 是否自动转换
+     * @param <I>         输入类型
+     * @param <O>         输出类型
+     * @return 转换器
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static <I, O> Converter<I, O> getConverter(Class<I> inputClass, Class<O> outputClass, boolean collection) {
-        // 如果有性能问题的话，看看能不能优化下。
+    public static <I, O> Converter<I, O> getConverter(Class<I> inputClass, Class<O> outputClass, boolean collection, boolean autoConvert) {
         ConverterCacheKey converterCacheKey = new ConverterCacheKey(inputClass, outputClass, collection);
-
-        return Optional.ofNullable(CONVERTS.get(converterCacheKey)).orElse((Converter) input -> {
-            String converterCode = ConverterGenerator.generateCode(inputClass, outputClass);
-            LOGGER.warn("未找到合适的类型转换器,将使用默认转换器转化。Convert From {} To {} and isCollection={}, 转换类参考转换代码： {}", inputClass, outputClass, collection, converterCode);
-            O o;
-            try {
-                o = outputClass.newInstance();
-                BeanUtils.copyProperties(input, o);
-            } catch (Exception e) {
-                LOGGER.error("使用默认转换器转换出错,Convert From {} To {} and isCollection={}", inputClass, outputClass, collection);
-                throw new UnsupportedOperationException("不支持默认转换器，使用默认转换出错");
-            }
-            return o;
-        });
+        // 尝试获取转换器
+        Converter<I, O> converter = (Converter<I, O>) CONVERTS.get(converterCacheKey);
+        // 开启了自动转换
+        if (autoConvert) {
+            converter = Optional.ofNullable(converter).orElseGet(() -> {
+                // 找不到转换器，尝试自动生成
+                String code = ConverterGenerator.generateCode(inputClass, outputClass);
+                String name = inputClass.getSimpleName() + "To" + outputClass.getSimpleName() + "Converter";
+                try {
+                    // 编译代码 并加载类
+                    Class aClass = CompilerUtils.CACHED_COMPILER.loadFromJava(name, code);
+                    Converter<I, O> autoConverter = (Converter<I, O>) aClass.newInstance();
+                    // 注册自动生成的转换器
+                    ConverterFactory.register(autoConverter);
+                    LOGGER.info("自动生成了类型转换器，并动态加载到JVM，注册为转换器。类名：{} \n code : \n{}", name, code);
+                    return autoConverter;
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                    LOGGER.error(" {}  to {}  自动生成转换器失败，请手动生成转换器！", inputClass.getSimpleName(), outputClass.getSimpleName());
+                    throw new ConvertException("自动生成转换器失败，请手动生成转换器！", e);
+                }
+            });
+        } else {
+            converter = Optional.ofNullable(converter).orElseThrow(() -> new ConvertException("未找到类型转换器，请检查是否已经注册。" + converterCacheKey));
+        }
+        return converter;
     }
 
+    /**
+     * 注册转换器
+     *
+     * @param converter 转换器
+     */
     public static void register(Converter<?, ?> converter) {
         Type[] interfaceActualTypeArguments = getActualTypeArguments(converter.getClass(), 1, 2);
 
@@ -78,6 +106,9 @@ class ConverterFactory extends AbstractFactory {
         return list;
     }
 
+    /**
+     * 缓存key
+     */
     private static class ConverterCacheKey {
         private final Class<?> input;
         private final Class<?> output;

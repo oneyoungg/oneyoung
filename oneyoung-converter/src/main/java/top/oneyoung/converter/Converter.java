@@ -3,14 +3,17 @@ package top.oneyoung.converter;
 import top.oneyoung.converter.factory.ConverterProxy;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * @param <O> 标记，将会转换的目标类型
- * @author oneyoung* @since 2020/1/15 22:12
+ * @author oneyoung
+ * @since 2020/1/15 22:12
  */
+@SuppressWarnings({"unchecked"})
 @FunctionalInterface
 public interface Converter<I, O> extends Function<I, O> {
 
@@ -27,7 +30,7 @@ public interface Converter<I, O> extends Function<I, O> {
         if (input == null) {
             return null;
         }
-        return new ConverterProxy<I, O>((Class<I>) input.getClass(), outputClass, false).convert(input);
+        return new ConverterProxy<I, O>((Class<I>) input.getClass(), outputClass, input instanceof Collection).convert(input);
     }
 
 
@@ -45,65 +48,76 @@ public interface Converter<I, O> extends Function<I, O> {
         if (input == null) {
             return null;
         }
-        return ConverterStream.from(input, inputClass).convert(outputClass).get();
-    }
-
-    /**
-     * Collection集合类使用
-     */
-    static <Input, Collect extends Collection<Input>, Output> Collection<Output> directConvertCollection(Collect input, Class<Input> inputClass, Class<Output> outputClass) {
-        if (input == null) {
-            return null;
-        }
-        return ConverterStream.fromCollection(input, inputClass).convert(outputClass).get();
-    }
-
-    /**
-     * List集合类使用
-     */
-    static <Input, Collect extends List<Input>, Output> List<Output> directConvertCollection(Collect input, Class<Input> inputClass, Class<Output> outputClass) {
-        if (input == null) {
-            return null;
-        }
-        return ConverterStream.fromList(input, inputClass).convert(outputClass).get();
+        return new ConverterProxy<I, O>((Class<I>) inputClass, outputClass, input instanceof Collection).convert(input);
     }
 
     /**
      * Collection集合类使用，遍历方式
+     *
+     * @param input       输入
+     * @param outputClass 输出class
+     * @param <I>         输入
+     * @param <C>         输入集合
+     * @param <O>         输出
+     * @return 输出
      */
-    static <Input, Collect extends Collection<Input>, Output> Collection<Output> directConvertCollectionSingle(Collect input, Class<Output> outputClass) {
-        if (input == null) {
-            return null;
+    static <I, C extends Collection<I>, O> Collection<O> directConvertCollectionSingle(C input, Class<O> outputClass) {
+        if (input == null || input.isEmpty()) {
+            return Collections.emptyList();
         }
         return input.stream().map(item -> directConvert(item, outputClass)).collect(Collectors.toList());
     }
 
     /**
      * Collection集合类使用，遍历方式
+     *
+     * @param input       输入
+     * @param inputClass  输入class
+     * @param outputClass 输出class
+     * @param <I>         输入
+     * @param <C>         输入集合
+     * @param <O>         输出
+     * @return 输出
      */
-    static <Input, Collect extends Collection<Input>, Output> Collection<Output> directConvertCollectionSingle(Collect input, Class<Input> inputClass, Class<Output> outputClass) {
+    static <I, C extends Collection<I>, O> Collection<O> directConvertCollectionSingle(C input, Class<I> inputClass, Class<O> outputClass) {
         if (input == null) {
-            return null;
+            return Collections.emptyList();
         }
         return input.stream().map(item -> directConvert(item, inputClass, outputClass)).collect(Collectors.toList());
     }
 
     /**
      * List集合类使用，遍历方式
+     *
+     * @param input       输入
+     * @param outputClass 输出class
+     * @param <I>         输入
+     * @param <C>         输入集合
+     * @param <O>         输出
+     * @return 输出
      */
-    static <Input, Collect extends List<Input>, Output> List<Output> directConvertCollectionSingle(Collect input, Class<Output> outputClass) {
+    static <I, C extends List<I>, O> List<O> directConvertCollectionSingle(C input, Class<O> outputClass) {
         if (input == null) {
-            return null;
+            return Collections.emptyList();
         }
         return input.stream().map(item -> directConvert(item, outputClass)).collect(Collectors.toList());
     }
 
+
     /**
      * List集合类使用，遍历方式
+     *
+     * @param input       输入
+     * @param inputClass  输入class
+     * @param outputClass 输出class
+     * @param <I>         输入
+     * @param <C>         输入集合
+     * @param <O>         输出
+     * @return 输出
      */
     static <I, C extends List<I>, O> List<O> directConvertCollectionSingle(C input, Class<I> inputClass, Class<O> outputClass) {
         if (input == null) {
-            return null;
+            return Collections.emptyList();
         }
         return input.stream().map(item -> directConvert(item, inputClass, outputClass)).collect(Collectors.toList());
     }
