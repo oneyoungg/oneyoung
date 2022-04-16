@@ -58,6 +58,7 @@ public class ConvertTest {
 
     @Test
     public void name() {
-        Converter.directConvert(CreateSchoolRequest.builder().name("test").build(), CreateSchoolServiceRequest.class);
+        CreateSchoolRequest request = CreateSchoolRequest.builder().name("test").build();
+        CreateSchoolServiceRequest createSchoolServiceRequest = Converter.directConvert(request, CreateSchoolServiceRequest.class);
     }
 }
