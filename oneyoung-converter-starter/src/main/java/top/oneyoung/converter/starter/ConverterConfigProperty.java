@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * ConverterConfigProperty
+ * ConverterConfigProperty 配置类
  *
  * @author oneyoung
  * @since 2022/4/15 21:44
