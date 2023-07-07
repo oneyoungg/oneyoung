@@ -1,0 +1,4 @@
+/**
+ * Enum
+ */
+package oneyoung.enumlearn;
