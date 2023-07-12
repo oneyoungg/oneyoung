@@ -10,6 +10,10 @@ public class TreeUtil {
     public static void main(String[] args) {
         TreeUtil treeUtil = new TreeUtil();
         Integer[] nums = {1, 9, 3, 4, 5, 10, 7, 8, 20};
+        TreeNode treeNode = treeUtil.buildBTree(nums);
+        for (TreeNode node : treeNode) {
+            System.out.println(node.val);
+        }
     }
     /**
      * 根据数组 建立二叉查找树
