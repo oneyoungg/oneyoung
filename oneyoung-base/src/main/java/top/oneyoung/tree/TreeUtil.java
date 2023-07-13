@@ -11,9 +11,11 @@ public class TreeUtil {
         TreeUtil treeUtil = new TreeUtil();
         Integer[] nums = {1, 9, 3, 4, 5, 10, 7, 8, 20};
         TreeNode treeNode = treeUtil.buildBTree(nums);
-        for (TreeNode node : treeNode) {
-            System.out.println(node.val);
-        }
+//        dep(treeNode);
+        TreeNode.postorderTraversal(treeNode);
+//        for (TreeNode node : treeNode) {
+//            System.out.print(node.val + " ");
+//        }
     }
     /**
      * 根据数组 建立二叉查找树
@@ -52,6 +54,15 @@ public class TreeUtil {
                 insert(root.right, val);
             }
         }
+    }
+
+    private static void dep(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        System.out.print(root.val + " ");
+        dep(root.left);
+        dep(root.right);
     }
 
 
