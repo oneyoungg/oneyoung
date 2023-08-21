@@ -23,7 +23,7 @@ public class TreeUtil {
      * @param nums 数据
      * @return 根节点
      */
-    public TreeNode buildBTree(Integer[] nums) {
+    public static TreeNode buildBTree(Integer[] nums) {
         TreeNode root = new TreeNode(nums[0]);
         for (int i = 1; i < nums.length; i++) {
             if (nums[i] == null) {
@@ -40,7 +40,7 @@ public class TreeUtil {
      * @param root 根节点
      * @param val  节点值
      */
-    private void insert(TreeNode root, int val) {
+    private static void insert(TreeNode root, int val) {
         if (val < root.val) {
             if (root.left == null) {
                 root.left = new TreeNode(val);
