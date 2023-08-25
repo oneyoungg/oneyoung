@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  * @since 2023/7/21 021 16:41
  */
 
-public class IODEmo {
+public class  IODEmo {
     public static void main(String[] args) {
         printPath("D:\\project\\oneyoung\\oneyoung-base\\src\\main\\java");
     }
