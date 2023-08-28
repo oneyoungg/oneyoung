@@ -23,6 +23,8 @@ public class ProxyTest {
     }
 
     public static void commitTransaction() {
+        ThreadLocal<Object> objectThreadLocal = new ThreadLocal<>();
+        objectThreadLocal.set("123");
         System.out.println("commit transaction");
     }
 }
