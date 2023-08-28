@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "sms",
+      "type": "top.oneyoung.sms.starter.config.SmsProperties",
+      "sourceType": "top.oneyoung.sms.starter.config.SmsProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "sms.access-key-id",
+      "type": "java.lang.String",
+      "sourceType": "top.oneyoung.sms.starter.config.SmsProperties"
+    },
+    {
+      "name": "sms.access-key-secret",
+      "type": "java.lang.String",
+      "sourceType": "top.oneyoung.sms.starter.config.SmsProperties"
+    },
+    {
+      "name": "sms.sign-name",
+      "type": "java.lang.String",
+      "sourceType": "top.oneyoung.sms.starter.config.SmsProperties"
+    },
+    {
+      "name": "sms.template-code",
+      "type": "java.lang.String",
+      "sourceType": "top.oneyoung.sms.starter.config.SmsProperties"
+    }
+  ],
+  "hints": []
+}
