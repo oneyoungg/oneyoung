@@ -1,6 +1,7 @@
 package top.oneyoung.springdemo;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import top.oneyoung.springdemo.color.Color;
 
 import java.util.Map;
@@ -13,6 +14,18 @@ import java.util.Map;
  */
 public class Main {
     public static void main(String[] args) {
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        System.out.println("============================");
+        Map<String, Color> beansOfType = applicationContext.getBeansOfType(Color.class);
+        beansOfType.forEach((k, v) -> System.out.println(k + " : " + v.getColor()));
+        Object product = applicationContext.getBean("product");
+        Object product1 = applicationContext.getBean("product");
+        System.out.println(product);
+        System.out.println(product1);
+        System.out.println(product1 == product);
+    }
+
+    public static void annotationConfigApplicationContext() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("top.oneyoung");
         System.out.println("============================");
         Map<String, Color> beansOfType = context.getBeansOfType(Color.class);

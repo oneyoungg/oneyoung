@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="blue" class="top.oneyoung.springdemo.color.Blue" scope="singleton">
+        <property name="name" value="blue"/>
+    </bean>
+
+    <bean id="product" class="top.oneyoung.springdemo.factorybean.ProductFactoryBean"/>
+
+    <bean id="customBeanFactoryPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanFactoryPostProcessor"/>
+
+    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init"/>
+
+    <bean id="customBeanPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanPostProcessor"/>
+</beans>

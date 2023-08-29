@@ -6,7 +6,7 @@ package top.oneyoung.springdemo.color;
  * @author oneyoung
  * @since 2023/8/28 10:56
  */
-public class Green implements Color{
+public class Green implements Color {
     @Override
     public String getColor() {
         return "green";
