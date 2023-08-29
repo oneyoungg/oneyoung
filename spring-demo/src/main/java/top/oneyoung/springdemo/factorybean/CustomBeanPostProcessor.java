@@ -11,6 +11,10 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  */
 public class CustomBeanPostProcessor implements BeanPostProcessor {
 
+    public CustomBeanPostProcessor() {
+        System.out.println("CustomBeanPostProcessor constructor");
+    }
+
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         System.out.println("postProcessBeforeInitialization: " + beanName + " : " + bean.getClass());

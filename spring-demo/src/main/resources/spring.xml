@@ -12,7 +12,9 @@
 
     <bean id="customBeanFactoryPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanFactoryPostProcessor"/>
 
-    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init"/>
+    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init">
+        <property name="name" value="order"/>
+    </bean>
 
     <bean id="customBeanPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanPostProcessor"/>
 </beans>

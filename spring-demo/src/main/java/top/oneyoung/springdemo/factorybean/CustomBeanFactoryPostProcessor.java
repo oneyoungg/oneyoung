@@ -21,6 +21,7 @@ public class CustomBeanFactoryPostProcessor implements BeanFactoryPostProcessor 
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        System.out.println("CustomBeanFactoryPostProcessor postProcessBeanFactory");
         beanFactory.getBeanDefinition("product").setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
     }
 }
