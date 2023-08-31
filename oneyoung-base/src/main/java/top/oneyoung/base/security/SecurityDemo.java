@@ -26,6 +26,7 @@ public class SecurityDemo {
         String data = "123";
         String data1 = "1234";
         byte[] sign = sign(data, pr);
+        System.out.println(signString(data, pr));
         boolean dataResult = veryFly(data, sign, publicKeyString);
         boolean data1Result = veryFly(data1, sign, publicKeyString);
         System.out.println(dataResult); // true
@@ -46,7 +47,11 @@ public class SecurityDemo {
 
         byte[] signatureBytes = signature.sign();
         return signatureBytes;
+    }
 
+    public static String signString(String data, String privateKeyString) throws Exception {
+        byte[] sign = sign(data, privateKeyString);
+        return  Base64.getEncoder().encodeToString(sign);
     }
 
     public static boolean veryFly(String data, byte[] signatureBytes, String publicKeyString) throws Exception {
