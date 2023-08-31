@@ -2,8 +2,8 @@ package top.oneyoung.springdemo;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import top.oneyoung.springdemo.circulate.AService;
 import top.oneyoung.springdemo.color.Color;
-import top.oneyoung.springdemo.factorybean.Order;
 
 import java.util.Map;
 
@@ -15,9 +15,11 @@ import java.util.Map;
  */
 public class Main {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring.xml");
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[]{"classpath:spring.xml"}, false);
+        applicationContext.setAllowCircularReferences(true);
+        applicationContext.refresh();
         System.out.println("============================");
-        Order bean = applicationContext.getBean(Order.class);
+        AService bean = applicationContext.getBean(AService.class);
         System.out.println(bean);
         applicationContext.close();
     }

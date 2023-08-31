@@ -4,17 +4,26 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <bean id="blue" class="top.oneyoung.springdemo.color.Blue" scope="singleton">
-        <property name="name" value="blue"/>
+<!--    <bean id="blue" class="top.oneyoung.springdemo.color.Blue" scope="singleton">-->
+<!--        <property name="name" value="blue"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="product" class="top.oneyoung.springdemo.factorybean.ProductFactoryBean"/>-->
+
+<!--    <bean id="customBeanFactoryPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanFactoryPostProcessor"/>-->
+
+<!--    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init">-->
+<!--        <property name="name" value="order"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="customBeanPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanPostProcessor"/>-->
+
+    <bean id="aService" class="top.oneyoung.springdemo.circulate.AServiceImpl">
+        <property name="BService" ref="bService"/>
     </bean>
 
-    <bean id="product" class="top.oneyoung.springdemo.factorybean.ProductFactoryBean"/>
-
-    <bean id="customBeanFactoryPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanFactoryPostProcessor"/>
-
-    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init">
-        <property name="name" value="order"/>
+    <bean id="bService" class="top.oneyoung.springdemo.circulate.BServiceImpl">
+        <property name="AService" ref="aService"/>
     </bean>
 
-    <bean id="customBeanPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanPostProcessor"/>
 </beans>
