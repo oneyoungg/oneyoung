@@ -23,12 +23,13 @@ public class SecurityDemo {
         byte[] privateKeyEncoded = privateKey.getEncoded();
         String pr = Base64.getEncoder().encodeToString(privateKeyEncoded);
 
-        String data = "123";
+        String data = "{'outTradeNo:'1xxx','timestramp':11112321}";
         String data1 = "1234";
         byte[] sign = sign(data, pr);
-        System.out.println(signString(data, pr));
-        boolean dataResult = veryFly(data, sign, publicKeyString);
-        boolean data1Result = veryFly(data1, sign, publicKeyString);
+        String signString = signString(data, pr);
+        System.out.println(signString);
+        boolean dataResult = veryFly(data, signString, publicKeyString);
+        boolean data1Result = veryFly(data1, signString, publicKeyString);
         System.out.println(dataResult); // true
         System.out.println(data1Result); // false
 
@@ -54,7 +55,7 @@ public class SecurityDemo {
         return  Base64.getEncoder().encodeToString(sign);
     }
 
-    public static boolean veryFly(String data, byte[] signatureBytes, String publicKeyString) throws Exception {
+    public static boolean veryFly(String data, String signatureBytes, String publicKeyString) throws Exception {
         byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyString);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -65,7 +66,7 @@ public class SecurityDemo {
 
         signature.update(data.getBytes());
 
-        boolean isValid = signature.verify(signatureBytes);
+        boolean isValid = signature.verify(Base64.getDecoder().decode(signatureBytes));
         return isValid;
     }
 }
