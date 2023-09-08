@@ -10,13 +10,13 @@
 
 <!--    <bean id="product" class="top.oneyoung.springdemo.factorybean.ProductFactoryBean"/>-->
 
-<!--    <bean id="customBeanFactoryPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanFactoryPostProcessor"/>-->
+    <bean id="customBeanFactoryPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanFactoryPostProcessor"/>
 
-<!--    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init">-->
-<!--        <property name="name" value="order"/>-->
-<!--    </bean>-->
+    <bean id="order" class="top.oneyoung.springdemo.factorybean.Order" init-method="init">
+        <property name="name" value="order"/>
+    </bean>
 
-<!--    <bean id="customBeanPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanPostProcessor"/>-->
+    <bean id="customBeanPostProcessor" class="top.oneyoung.springdemo.factorybean.CustomBeanPostProcessor"/>
 
     <bean id="aService" class="top.oneyoung.springdemo.circulate.AServiceImpl">
         <property name="BService" ref="bService"/>

@@ -3,7 +3,6 @@ package top.oneyoung.springdemo.factorybean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 
 /**
@@ -22,7 +21,6 @@ public class CustomBeanFactoryPostProcessor implements BeanFactoryPostProcessor 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         System.out.println("CustomBeanFactoryPostProcessor postProcessBeanFactory");
-        beanFactory.getBeanDefinition("product").setScope(ConfigurableBeanFactory.SCOPE_PROTOTYPE);
     }
 }
 
