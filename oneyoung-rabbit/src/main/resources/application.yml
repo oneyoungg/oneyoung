@@ -9,3 +9,10 @@ spring:
     publisher-confirm-type: correlated
     template:
       mandatory: true
+    publisher-returns: true
+    # 手动ack
+    listener:
+      simple:
+        acknowledge-mode: manual
+server:
+  port: 801

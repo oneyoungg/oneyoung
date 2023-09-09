@@ -1,9 +1,6 @@
 package top.ooneyoung.rabbit.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.Exchange;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,8 +36,30 @@ public class RabbitConfig {
         return new Binding("queue1", Binding.DestinationType.QUEUE,"exchange", "routekey.*",null);
     }
 
+
+    @Bean
+    public Queue lazyQueue(){
+        return QueueBuilder.durable("lazy.queue").lazy().build();
+    }
+
+    @Bean
+    public Binding lazyBinding(Queue lazyQueue, Exchange exchange) {
+        return BindingBuilder.bind(lazyQueue).to(exchange).with("lazy.rute").noargs();
+    }
+
     @Bean
     public Binding binding1(){
         return new Binding("queue2", Binding.DestinationType.QUEUE,"exchange", "routekey.*",null);
+    }
+
+
+    @Bean
+    public Queue bitchQueue(){
+        return QueueBuilder.durable("bitch.queue").build();
+    }
+
+    @Bean
+    public Binding bitchBinding(Queue bitchQueue, Exchange exchange){
+        return BindingBuilder.bind(bitchQueue).to(exchange).with("bitch").noargs();
     }
 }

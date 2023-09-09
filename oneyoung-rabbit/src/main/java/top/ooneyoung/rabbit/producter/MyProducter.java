@@ -18,8 +18,8 @@ public class MyProducter {
     private RabbitTemplate rabbitTemplate;
 
 
-    public void send(String message, String routeKey) {
-        rabbitTemplate.convertAndSend("exchange", routeKey, message, message1 -> {
+    public void send(String message, String exchange, String routeKey) {
+        rabbitTemplate.convertAndSend(exchange, routeKey, message, message1 -> {
             message1.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
             return message1;
         });

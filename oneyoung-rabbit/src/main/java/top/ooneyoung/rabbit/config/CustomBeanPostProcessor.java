@@ -28,13 +28,17 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
             RabbitTemplate rabbitTemplate = (RabbitTemplate) bean;
             log.info("config rabbit");
             rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
-                log.info("correlationData: {}", correlationData);
-                log.info("ack: {}", ack);
-                log.info("cause: {}", cause);
+//                log.info("===============client -> exchange start ====================");
+//                log.info("correlationData: {}", correlationData);
+//                log.info("ack: {}", ack);
+//                log.info("cause: {}", cause);
+//                log.info("===============client -> exchange end ====================");
             });
 
             rabbitTemplate.setReturnsCallback(returned -> {
+                log.info("===============exchange -> queue start ====================");
                 log.info("returned: {}", returned);
+                log.info("===============exchange -> queuen end ====================");
             });
         }
         return BeanPostProcessor.super.postProcessAfterInitialization(bean, beanName);

@@ -18,8 +18,8 @@ public class MyControoler {
     MyProducter myProducter;
 
     @GetMapping("send")
-    public String send(String message, String routeKey) {
-        myProducter.send(message, routeKey);
+    public String send(String message,String exchange, String routeKey) {
+        myProducter.send(message,exchange,  routeKey);
         return "success";
     }
 }

@@ -26,6 +26,38 @@ docker run \
     -d mysql:8.0
 
 
-docker run -d  --name rabbit -e RABBITMQ_DEFAULT_USER=admin -e RABBITMQ_DEFAULT_PASS=admin -p 15672:15672 -p 5672:5672 rabbitmq:3.8.15-management
+docker run -d  --name rabbit1 \
+--hostname rabbit_host1 \
+-p 15672:15672 \
+-p 5672:5672 \
+-e RABBITMQ_NODENAME=rabbitnode1 \
+-e RABBITMQ_ERLANG_COOKIE='cookie' \
+ -e RABBITMQ_DEFAULT_USER=admin \
+  -e RABBITMQ_DEFAULT_PASS=admin \
+--privileged=true \
+ rabbitmq:3.8.15-management
 
+ docker run -d  --name rabbit2 \
+ --hostname rabbit_host2 \
+ --link rabbit1:rabbit_host1 \
+ -p 15673:15672 \
+ -p 5673:5672 \
+ -e RABBITMQ_NODENAME=rabbitnode2 \
+ -e RABBITMQ_ERLANG_COOKIE='cookie' \
+  -e RABBITMQ_DEFAULT_USER=admin \
+   -e RABBITMQ_DEFAULT_PASS=admin \
+ --privileged=true \
+  rabbitmq:3.8.15-management
+
+ docker run -d  --name rabbit3 \
+ --hostname rabbit_host3 \
+  --link rabbit2:rabbit_host2 \
+ -p 15674:15672 \
+ -p 5674:5672 \
+ -e RABBITMQ_NODENAME=rabbitnode3 \
+ -e RABBITMQ_ERLANG_COOKIE='cookie' \
+  -e RABBITMQ_DEFAULT_USER=admin \
+   -e RABBITMQ_DEFAULT_PASS=admin \
+ --privileged=true \
+  rabbitmq:3.8.15-management
 
